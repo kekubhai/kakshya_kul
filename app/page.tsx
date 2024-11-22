@@ -1,11 +1,13 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 'use client'
 
 import { motion } from 'framer-motion'
 import Header from './components/Header'
 import Hero from './components/Hero'
 import Features from './components/Features'
-import Testimonials from './components/Testimonial'
+import { AnimatedTestimonials } from '@/components/ui/animated-testimonials'
 import Footer from './components/Footer'
+import { AnimatedTestimonialsDemo } from './components/Testimonial'
 
 export default function Home() {
   return (
@@ -18,7 +20,7 @@ export default function Home() {
       <Header />
       <Hero />
       <Features />
-      <Testimonials />
+      <AnimatedTestimonialsDemo />
       <Footer />
     </motion.div>
   )

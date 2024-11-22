@@ -1,7 +1,8 @@
 'use client'
 
+import ImageSlider from '@/components/Slider'
 import { motion } from 'framer-motion'
-import Image from 'next/image'
+
 
 export default function Hero() {
   return (
@@ -33,13 +34,7 @@ export default function Hero() {
           transition={{ duration: 0.5 }}
           className="md:w-1/2"
         >
-          <Image
-            src="/"
-            alt="Tense Indian family discussing college admission"
-            width={600}
-            height={400}
-            className="rounded-lg shadow-xl"
-          />
+         <ImageSlider/>
         </motion.div>
       </div>
     </section>
