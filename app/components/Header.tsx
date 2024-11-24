@@ -1,122 +1,112 @@
-"use client"
+"use client";
 
-import { useState, useEffect } from "react"
-import { Moon, School, School2, Sun } from 'lucide-react'
-import { Button } from "@/components/ui/button"
-import Link from "next/link"
-import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
+import Link from "next/link";
+import { useState } from "react";
 
-export default function Navbar() {
-  const [theme, setTheme] = useState("light")
+import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
+import { Moon, Sun, Check, ChevronsUpDown } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
+import { cn } from "@/lib/utils";
 
- 
-  const toggleTheme = () => {
-    const newTheme = theme === "light" ? "dark" : "light"
-    setTheme(newTheme)
-    document.documentElement.classList.toggle("dark")
-    localStorage.setItem("theme", newTheme)
-  }
+const navItems = [
+  { name: "Home", href: "/" },
+  { name: "Contact", href: "/contact" },
+  { name: "The Dev", href: "/the-dev" },
+];
 
-  useEffect(() => {
-    const savedTheme = localStorage.getItem("theme") || "light"
-    setTheme(savedTheme)
-    if (savedTheme === "dark") {
-      document.documentElement.classList.add("dark")
-    }
-  }, [])
+const featuresDropdown = [
+  { value: "roi-calculator", label: "ROI Calculator", href: "/roi-calculator" },
+  { value: "college-comparison", label: "College Comparisons", href: "/college-comparison" },
+  { value: "career-insights", label: "Career Insights", href: "/career-insights" },
+];
+
+export function Navbar() {
+  const { theme, setTheme } = useTheme();
+  const [featuresOpen, setFeaturesOpen] = useState(false);
+  const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
 
   return (
-    <header className="flex bg-transparent  w-full  mx-3 py-4  border-b transition-colors duration-200">
-      <div className="flex  items-center space-x-8">
-        <Link href="/" className="flex items-center space-x-2">
-        <School2/>
-          <span className="text-xl px-3 font-bold">Kakshya-KUL</span>
-        </Link>
+    <nav className="bg-teal-500 border-black">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex justify-between h-16">
+          <div className="flex-shrink-0 flex items-center">
+            <Link href="/" className="text-2xl font-bold text-primary">
+              Kakshya-KUL
+            </Link>
+          </div>
+          <div className="flex items-center space-x-4">
+            {navItems.map((item) => (
+              <Link
+                key={item.name}
+                href={item.href}
+                className="relative inline-flex items-center px-1 pt-1 text-sm font-medium text-foreground hover:text-primary"
+              >
+                {item.name}
+              </Link>
+            ))}
+
+            {/* Features Dropdown */}
+            <Popover open={featuresOpen} onOpenChange={setFeaturesOpen}>
+              <PopoverTrigger asChild>
+                <Button
+                  variant="outline"
+                  role="combobox"
+                  aria-expanded={featuresOpen}
+                  className="w-[200px] justify-between"
+                >
+                  {selectedFeature
+                    ? featuresDropdown.find((item) => item.value === selectedFeature)?.label
+                    : "Features"}
+                  <ChevronsUpDown className="opacity-50" />
+                </Button>
+              </PopoverTrigger>
+              <PopoverContent className="w-[200px] p-0">
+                <Command>
+                  <CommandInput placeholder="Search feature..." className="h-9" />
+                  <CommandList>
+                    <CommandEmpty>No feature found.</CommandEmpty>
+                    <CommandGroup>
+                      {featuresDropdown.map((feature) => (
+                        <CommandItem
+                          key={feature.value}
+                          onSelect={(currentValue) => {
+                            setSelectedFeature(currentValue === selectedFeature ? null : currentValue);
+                            setFeaturesOpen(false);
+                          }}
+                          value={feature.value}
+                        >
+                          <Link href={feature.href} className="w-full">
+                            {feature.label}
+                          </Link>
+                          <Check
+                            className={cn(
+                              "ml-auto",
+                              selectedFeature === feature.value ? "opacity-100" : "opacity-0"
+                            )}
+                          />
+                        </CommandItem>
+                      ))}
+                    </CommandGroup>
+                  </CommandList>
+                </Command>
+              </PopoverContent>
+            </Popover>
+
+            <Button
+              variant="ghost"
+              size="icon"
+              aria-label="Toggle theme"
+              className="ml-4"
+              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+            >
+              <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+            </Button>
+          </div>
+        </div>
       </div>
-
-      <nav className="hidden md:flex items-center space-x-8">
-        <Link
-          href="/"
-          className="text-sm font-medium transition-colors hover:text-primary"
-        >
-          Home
-        </Link>
-        <a
-          href="/features"
-          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-        >
- <DropdownMenu>
-      <DropdownMenuTrigger asChild>
-        <Button variant="link">Features</Button>
-      </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-56">
-        <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
-        <DropdownMenuSeparator />
-        <DropdownMenuRadioGroup   >
-          <DropdownMenuRadioItem value="top">
-            <Link href="/roi-calculator">ROI calculator</Link>
-          </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="bottom">
-            <Link href="/career-insights">Career Insights</Link>
-          </DropdownMenuRadioItem>
-          <DropdownMenuRadioItem value="right">
-            <Link href="/college-comparisons">College Comparisons</Link>
-          </DropdownMenuRadioItem>
-        </DropdownMenuRadioGroup>
-      </DropdownMenuContent>
-    </DropdownMenu>
-          
-        </a>
-        
-        <a
-          href="/contacts"
-          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-        >
-          Contacts
-        </a>
-        <a
-          href="/the-dev"
-          className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
-        >
-          The Dev
-        </a>
-        <Button
-          variant="ghost"
-          size="icon"
-          aria-label="Toggle theme"
-          className="ml-4"
-          onClick={toggleTheme}
-        >
-          {theme === "dark" ? (
-            <Sun className="h-5 w-5" />
-          ) : (
-            <Moon className="h-5 w-5" />
-          )}
-        </Button>
-      </nav>
-
-      
-      <Button
-        variant="ghost"
-        size="icon"
-        className="md:hidden"
-        aria-label="Open menu"
-      >
-        <svg
-          className="h-6 w-6"
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path
-            strokeLinecap="round"
-            strokeLinejoin="round"
-            strokeWidth={2}
-            d="M4 6h16M4 12h16M4 18h16"
-          />
-        </svg>
-      </Button>
-    </header>
-  )
+    </nav>
+  );
 }
-
