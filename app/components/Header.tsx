@@ -1,9 +1,10 @@
 "use client"
 
 import { useState, useEffect } from "react"
-import { Moon, Sun } from 'lucide-react'
+import { Moon, School, School2, Sun } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { DropdownMenu, DropdownMenuContent, DropdownMenuLabel, DropdownMenuRadioGroup, DropdownMenuRadioItem, DropdownMenuSeparator, DropdownMenuTrigger } from "@/components/ui/dropdown-menu"
 
 export default function Navbar() {
   const [theme, setTheme] = useState("light")
@@ -25,10 +26,11 @@ export default function Navbar() {
   }, [])
 
   return (
-    <header className="flex  fixed  w-full px-6 py-4 bg-background border-b transition-colors duration-200">
-      <div className="flex items-center space-x-8">
+    <header className="flex bg-transparent  w-full  mx-3 py-4  border-b transition-colors duration-200">
+      <div className="flex  items-center space-x-8">
         <Link href="/" className="flex items-center space-x-2">
-          <span className="text-xl font-bold">Kakshya-KUL</span>
+        <School2/>
+          <span className="text-xl px-3 font-bold">Kakshya-KUL</span>
         </Link>
       </div>
 
@@ -43,8 +45,29 @@ export default function Navbar() {
           href="/features"
           className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
         >
-          Features
+ <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button variant="link">Features</Button>
+      </DropdownMenuTrigger>
+      <DropdownMenuContent className="w-56">
+        <DropdownMenuLabel>Panel Position</DropdownMenuLabel>
+        <DropdownMenuSeparator />
+        <DropdownMenuRadioGroup   >
+          <DropdownMenuRadioItem value="top">
+            <Link href="/roi-calculator">ROI calculator</Link>
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="bottom">
+            <Link href="/career-insights">Career Insights</Link>
+          </DropdownMenuRadioItem>
+          <DropdownMenuRadioItem value="right">
+            <Link href="/college-comparisons">College Comparisons</Link>
+          </DropdownMenuRadioItem>
+        </DropdownMenuRadioGroup>
+      </DropdownMenuContent>
+    </DropdownMenu>
+          
         </a>
+        
         <a
           href="/contacts"
           className="text-sm font-medium text-muted-foreground transition-colors hover:text-primary"
@@ -72,7 +95,7 @@ export default function Navbar() {
         </Button>
       </nav>
 
-      {/* Mobile menu button */}
+      
       <Button
         variant="ghost"
         size="icon"
