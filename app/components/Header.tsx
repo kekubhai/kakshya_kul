@@ -47,7 +47,7 @@ export function Navbar() {
               </Link>
             ))}
 
-            {/* Features Dropdown */}
+  
             <Popover open={featuresOpen} onOpenChange={setFeaturesOpen}>
               <PopoverTrigger asChild>
                 <Button
