@@ -9,6 +9,7 @@ import { AnimatedTestimonials } from '@/components/ui/animated-testimonials'
 import Footer from './components/Footer'
 import { AnimatedTestimonialsDemo } from './components/Testimonial'
 import { Navbar } from './components/Header'
+import Contact from './components/Contacts'
 
 export default function Home() {
   return (
@@ -21,6 +22,7 @@ export default function Home() {
      <Navbar/>
       <Hero />
       <Features />
+      <Contact/>
       <Footer />
     </motion.div>
   )
