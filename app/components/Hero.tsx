@@ -1,8 +1,10 @@
 'use client'
 
 import ImageSlider from '@/components/Slider'
+import PulsatingButton from '@/components/ui/pulsating-button'
 
 import { motion } from 'framer-motion'
+import Link from 'next/link'
 
 
 export default function Hero() {
@@ -21,16 +23,17 @@ export default function Hero() {
           <p className="text-xl mb-8  light: text-gray-200 dark:text-gray-700">
             Calculate your college education ROI and make informed decisions about your future.
           </p>
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-            className="bg-fuchsia-500 text-white px-8 py-3 rounded-full text-lg font-semibold hover:bg-blue-700 transition duration-300"
-          >
+      
 
+            <PulsatingButton>
+
+              <Link  href= {"/roi-calculator"} >
                 Calculate ROI
+              </Link>
+            </PulsatingButton>
               
 
-          </motion.button>
+         
         </motion.div>
         <motion.div
           initial={{ opacity: 0, x: 100 }}
