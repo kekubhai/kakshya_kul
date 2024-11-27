@@ -1,12 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   images: {
-    domains: [
-      "www.unsplash.com",
-      "media.istockphoto.com",
-      "images.unsplash.com",
-      
-      
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'www.unsplash.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'media.istockphoto.com',
+        pathname: '/**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'images.unsplash.com',
+        pathname: '/**',
+      },
     ],
   },
   reactStrictMode: true,
@@ -16,6 +26,6 @@ const nextConfig = {
   eslint: {
     ignoreDuringBuilds: true,
   },
-}
+};
 
-export default nextConfig
+export default nextConfig;

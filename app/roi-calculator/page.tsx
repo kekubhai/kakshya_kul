@@ -39,6 +39,10 @@ import { RoiChart } from "./roi-charts"
 import { RoiComparison } from "./roi-comparison"
 import { RoiSuggestions } from "./roi-suggestions"
 
+
+
+
+
 const formSchema = z.object({
   collegeFees: z.number().positive("College fees must be positive"),
   familyIncome: z.number().positive("Family income must be positive"),
@@ -191,7 +195,17 @@ export default function RoiCalculator() {
   
 
   return (
-    <Card className="w-full max-w-4xl mx-auto">
+    <Card className="w-full max-w-4xl mt-12 mx-auto bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 
+  shadow-2xl rounded-3xl border border-purple-200 transform transition-all duration-500 ease-in-out
+  hover:scale-110 hover:shadow-[0px_0px_40px_rgba(255,105,180,0.8)] 
+  hover:rotate-1 hover:from-pink-500 hover:to-teal-300" >
+      
+      <div className="flex flex-col items-center justify-center space-y-4">
+        <h2 className="text-xl font-semibold text-center mt-4">Unlock Your College ROI</h2>
+        <p className="text-lg text-gray-700 text-center">Discover the potential return on investment for your college degree.</p>
+       
+      </div>
+
       <CardContent className="p-6">
         <div className="flex justify-between items-center mb-6">
           <h1 className="text-2xl font-bold">ROI Calculator for College Degree</h1>
@@ -246,7 +260,7 @@ export default function RoiCalculator() {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                    />
 
                   <FormField
                     control={form.control}
@@ -260,12 +274,12 @@ export default function RoiCalculator() {
                             placeholder="Enter annual family income"
                             {...field}
                             onChange={e => field.onChange(Number(e.target.value))}
-                          />
+                            />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                    />
 
                   <Button type="button" onClick={() => setStep(2)}>Next</Button>
                 </div>
@@ -285,12 +299,12 @@ export default function RoiCalculator() {
                             placeholder="Enter expected salary after graduation"
                             {...field}
                             onChange={e => field.onChange(Number(e.target.value))}
-                          />
+                            />
                         </FormControl>
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                    />
 
                   <FormField
                     control={form.control}
@@ -315,7 +329,7 @@ export default function RoiCalculator() {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                    />
 
                   <FormField
                     control={form.control}
@@ -330,7 +344,7 @@ export default function RoiCalculator() {
                             step={1}
                             value={[field.value]}
                             onValueChange={(value) => field.onChange(value[0])}
-                          />
+                            />
                         </FormControl>
                         <FormDescription>
                           Slide to adjust cost of living (0 = Very Low, 100 = Very High)
@@ -348,7 +362,7 @@ export default function RoiCalculator() {
                       {isCalculating ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Calculating
+                          Check Results
                         </>
                       ) : (
                         "Calculate ROI"
@@ -375,6 +389,8 @@ export default function RoiCalculator() {
           </Form>
         </Tabs>
       </CardContent>
+                   
+
     </Card>
   )
 }
