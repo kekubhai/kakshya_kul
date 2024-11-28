@@ -32,13 +32,12 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import { Card, CardContent } from "@/components/ui/card"
+import {  Card, CardContent } from "@/components/ui/card"
 import { Progress } from "@/components/ui/progress"
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { RoiChart } from "./roi-charts"
 import { RoiComparison } from "./roi-comparison"
 import { RoiSuggestions } from "./roi-suggestions"
-
 
 
 
@@ -85,8 +84,8 @@ export default function RoiCalculator() {
   }
 
   function calculateRoi(values: z.infer<typeof formSchema>) {
-    const totalCost = values.collegeFees * 4 // 4 years of college
-    const potentialEarnings = values.avgSalary * 10 // 10 years after graduation
+    const totalCost = values.collegeFees * 4 
+    const potentialEarnings = values.avgSalary * 10 
     const roi = ((potentialEarnings - totalCost) / totalCost) * 100
     
     return {
@@ -195,14 +194,43 @@ export default function RoiCalculator() {
   
 
   return (
-    <Card className="w-full max-w-4xl mt-12 mx-auto bg-gradient-to-r from-purple-500 via-pink-500 to-red-500 
-  shadow-2xl rounded-3xl border border-purple-200 transform transition-all duration-500 ease-in-out
-  hover:scale-110 hover:shadow-[0px_0px_40px_rgba(255,105,180,0.8)] 
-  hover:rotate-1 hover:from-pink-500 hover:to-teal-300" >
+    <div className="bg-gradient-to-br 
+from-gray-900 
+via-purple-900 
+to-black 
+bg-size-400 
+animate-bg-shift 
+min-h-screen 
+w-full 
+fixed 
+inset-0 
+bg-no-repeat 
+bg-fixed 
+backdrop-blur-sm" >
+
+ 
+    <Card  className="w-full max-w-4xl mx-auto  mt-12
+bg-gradient-to-br from-gray-800 via-gray-900 to-black 
+shadow-2xl  border border-gray-700/50 
+transition-all duration-300 ease-in-out 
+hover:scale-[1.02] 
+hover:shadow-2xl 
+hover:ring-2 hover:ring-gray-600 
+ring-opacity-50 
+transform-gpu 
+backdrop-blur-md 
+text-gray-100 
+p-6 
+overflow-hidden 
+relative 
+group 
+outline-none 
+focus:ring-2 focus:ring-blue-500/70 
+dark:bg-opacity-90" >
       
       <div className="flex flex-col items-center justify-center space-y-4">
         <h2 className="text-xl font-semibold text-center mt-4">Unlock Your College ROI</h2>
-        <p className="text-lg text-gray-700 text-center">Discover the potential return on investment for your college degree.</p>
+        <p className="text-lg dark: text-white  text-center">Discover the potential return on investment for your college degree.</p>
        
       </div>
 
@@ -352,7 +380,7 @@ export default function RoiCalculator() {
                         <FormMessage />
                       </FormItem>
                     )}
-                  />
+                    />
 
                   <div className="flex justify-between">
                     <Button type="button" variant="outline" onClick={() => setStep(1)}>
@@ -392,6 +420,7 @@ export default function RoiCalculator() {
                    
 
     </Card>
+                </div>
   )
 }
 

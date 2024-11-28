@@ -5,7 +5,7 @@ import { useState } from "react";
 
 import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun, Check, ChevronsUpDown } from "lucide-react";
+import { Moon, Sun, Check, ChevronsUpDown, School2Icon } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
 import { cn } from "@/lib/utils";
@@ -28,11 +28,12 @@ export function Navbar() {
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
 
   return (
-    <nav className="bg-slate-600 border-black">
+    <nav className="bg-transparent border-gray-900 rounded-full ">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="text-2xl font-bold text-primary">
+            <Link href="/" className="text-2xl font-bold text-primary relative">
+             <School2Icon/>
               Kakshya-KUL
             </Link>
           </div>
@@ -48,7 +49,7 @@ export function Navbar() {
             ))}
 
   
-            <Popover open={featuresOpen} onOpenChange={setFeaturesOpen}>
+            <Popover  open={featuresOpen} onOpenChange={setFeaturesOpen}>
               <PopoverTrigger asChild>
                 <Button
                   variant="outline"

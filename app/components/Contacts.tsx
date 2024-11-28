@@ -27,7 +27,7 @@ export default function Contact() {
   }
 
   return (
-    <section className="py-24 bg-muted">
+    <section className="py-24 bg-muted bg-gray-50 dark:bg-gray-900 ">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="text-center">
           <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">

@@ -7,6 +7,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
+import { FaRupeeSign } from "react-icons/fa"
 
 interface RoiComparisonProps {
   results: {
@@ -17,7 +18,7 @@ interface RoiComparisonProps {
 }
 
 export function RoiComparison({ results }: RoiComparisonProps) {
-  // Sample comparison data - in a real app, this would come from a database
+
   const comparisonData = [
     {
       type: "Your Program",
@@ -58,8 +59,8 @@ export function RoiComparison({ results }: RoiComparisonProps) {
             {comparisonData.map((item) => (
               <TableRow key={item.type}>
                 <TableCell className="font-medium">{item.type}</TableCell>
-                <TableCell className="text-right">${item.cost.toLocaleString()}</TableCell>
-                <TableCell className="text-right">${item.earnings.toLocaleString()}</TableCell>
+                <TableCell className="text-right"><FaRupeeSign/>{item.cost.toLocaleString()}</TableCell>
+                <TableCell className="text-right"><FaRupeeSign/>{item.earnings.toLocaleString()}</TableCell>
                 <TableCell className="text-right">{item.roi.toFixed(1)}%</TableCell>
               </TableRow>
             ))}
