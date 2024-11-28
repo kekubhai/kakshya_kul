@@ -194,13 +194,18 @@ export default function RoiCalculator() {
   
 
   return (
-    <div className="bg-gradient-to-br 
+    <div className="light:bg-gradient-to-br 
 from-gray-900 
 via-purple-900 
 to-black 
 bg-size-400 
 animate-bg-shift 
-min-h-screen 
+min-h-screen
+
+dark: bg-gradient-to-br 
+from-neutral-400
+via-purple-900 
+to-black 
 w-full 
 fixed 
 inset-0 

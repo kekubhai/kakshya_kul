@@ -23,6 +23,7 @@ export default function Home() {
       <Hero />
       <Features />
       <Contact/>
+      <AnimatedTestimonialsDemo/>
       <Footer />
     </motion.div>
   )
