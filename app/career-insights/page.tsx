@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 
 
 "use client";
@@ -7,15 +8,17 @@ import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
 
-interface Career {
+type Career = {
   title: string;
   avgSalary: number;
   jobGrowth: number;
   skills: string[];
 }
 
+
+
 // gpt thing here
-const career: Career[] = [
+const careerData: Career[] = [
   { title: 'Software Engineer', avgSalary: 110000, jobGrowth: 22, skills: ['JavaScript', 'Python', 'SQL'] },
   { title: 'Data Scientist', avgSalary: 120000, jobGrowth: 31, skills: ['Python', 'R', 'Machine Learning'] },
   { title: 'UX Designer', avgSalary: 85000, jobGrowth: 13, skills: ['UI Design', 'User Research', 'Prototyping'] },
@@ -173,37 +176,31 @@ const career: Career[] = [
     { title:'Content Marketing Manager' ,avgSalary :85000 ,jobGrowth :22 ,skills :['Content Strategy','Content Creation','Analytics']},
 ];
 
-const CareerCard = ({ careers = career }: { careers?: Career[] }) => {
-  const [search, setSearch] = useState<string>('');
-  const [filteredData, setFilteredData] = useState<Career[]>(careers);
 
-  useEffect(() => {
-    const filterCareers = () => {
-      if (!search) return careers; 
-      return careers.filter((career) =>
-        career.title.toLowerCase().includes(search.toLowerCase())
-      );
-    };
-    setFilteredData(filterCareers());
-  }, [search, careers]);
+
+
+
+const CareerCard = () => {
+  const [search, setSearch] = useState("");
+
+  const filteredData = careerData.filter((career) =>
+    career.title.toLowerCase().includes(search.toLowerCase())
+  );
 
   return (
     <div className="p-6">
-      
       <Input
         placeholder="Search careers"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
         className="mb-4"
       />
-
-      
       <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {filteredData.map((career, index) => (
-          <Card key={`${career.title}-${index}`}>
+        {filteredData.map((career) => (
+          <Card key={career.title}>
             <CardHeader>
               <CardTitle>{career.title}</CardTitle>
-              <CardDescription>Average Salary: ${career.avgSalary.toLocaleString()}</CardDescription>
+              <CardDescription>Average Salary: ${career.avgSalary}</CardDescription>
             </CardHeader>
             <CardContent>
               <ResponsiveContainer width="100%" height={200}>
@@ -211,7 +208,8 @@ const CareerCard = ({ careers = career }: { careers?: Career[] }) => {
                   <XAxis dataKey="title" />
                   <YAxis />
                   <Tooltip />
-                  <Bar dataKey="avgSalary" fill={`hsl(${Math.random() * 360 % 360}, 90%, 70%)`} />
+                  <Bar  dataKey="avgSalary"
+                    fill={`hsl(${Math.random() * 360 % 360}, 90%, 70%)`}></Bar>
                 </BarChart>
               </ResponsiveContainer>
             </CardContent>
