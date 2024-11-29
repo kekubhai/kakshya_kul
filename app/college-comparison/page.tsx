@@ -14,9 +14,9 @@ import {
 } from "@/components/ui/table";
 
 const collegeData = [
-  { name: "University A", cost: 50000, ranking: 15, jobPlacement: 92 },
-  { name: "College B", cost: 35000, ranking: 30, jobPlacement: 88 },
-  { name: "Institute C", cost: 45000, ranking: 22, jobPlacement: 90 },
+  { name: "IIT Dhanbad", cost: 500000, ranking: 15, jobPlacement: 92 },
+  { name: "Amity University", cost: 3500000, ranking: 30, jobPlacement: 88 },
+  { name: "NIT Calicut", cost: 450000, ranking: 22, jobPlacement: 90 },
 ];
 
 export default function CollegeComparison() {
