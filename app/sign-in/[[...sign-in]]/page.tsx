@@ -1,0 +1,27 @@
+import { SignIn } from '@clerk/nextjs'
+
+export default function SignInPage() {
+  return (
+    <div className="min-h-screen flex items-center justify-center bg-slate-50">
+      <div className="w-full max-w-md">
+        <div className="text-center mb-8">
+          <h1 className="text-3xl font-bold text-slate-900 tracking-tight">Welcome back</h1>
+          <p className="text-slate-600 mt-2">Sign in to access your ROI calculator</p>
+        </div>
+        <SignIn 
+          appearance={{
+            elements: {
+              formButtonPrimary: 'bg-slate-900 hover:bg-slate-800 text-white',
+              card: 'shadow-xl border border-slate-200',
+              headerTitle: 'text-slate-900',
+              headerSubtitle: 'text-slate-600',
+              socialButtonsBlockButton: 'border-slate-200 hover:bg-slate-50',
+              formFieldInput: 'border-slate-200 focus:border-slate-900 focus:ring-slate-900',
+              footerActionLink: 'text-slate-900 hover:text-slate-700',
+            }
+          }}
+        />
+      </div>
+    </div>
+  )
+}

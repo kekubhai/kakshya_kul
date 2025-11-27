@@ -1,7 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
-
+import { ClerkProvider } from '@clerk/nextjs'
 
 import { ThemeProvider } from './providers'
 
@@ -18,13 +18,15 @@ export default function RootLayout({
   children: React.ReactNode
 }) {
   return (
-    <html lang="en" className="light" suppressHydrationWarning>
-      <body className={`${inter.className} antialiased bg-white text-slate-900`}>
-        <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light">
-          <main>{children}</main>
-        </ThemeProvider>
-      </body>
-    </html>
+    <ClerkProvider>
+      <html lang="en" className="light" suppressHydrationWarning>
+        <body className={`${inter.className} antialiased bg-white text-slate-900`}>
+          <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light">
+            <main>{children}</main>
+          </ThemeProvider>
+        </body>
+      </html>
+    </ClerkProvider>
   )
 }
 

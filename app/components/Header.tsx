@@ -9,6 +9,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -66,14 +67,36 @@ export function Navbar() {
             </DropdownMenu>
           </div>
 
-          {/* Right Button */}
-          <div className="flex items-center">
-            <Button
-              asChild
-              className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-6 py-2 h-auto text-sm font-medium transition-all shadow-sm hover:shadow-md"
-            >
-              <Link href="/roi-calculator">Get Started</Link>
-            </Button>
+          {/* Right Buttons - Auth */}
+          <div className="flex items-center gap-3">
+            <SignedOut>
+              <SignInButton mode="modal">
+                <Button variant="ghost" className="text-sm font-medium text-slate-600 hover:text-slate-900">
+                  Sign In
+                </Button>
+              </SignInButton>
+              <SignUpButton mode="modal">
+                <Button className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-6 py-2 h-auto text-sm font-medium transition-all shadow-sm hover:shadow-md">
+                  Get Started
+                </Button>
+              </SignUpButton>
+            </SignedOut>
+            <SignedIn>
+              <Button
+                asChild
+                className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-6 py-2 h-auto text-sm font-medium transition-all shadow-sm hover:shadow-md"
+              >
+                <Link href="/roi-calculator">Calculate ROI</Link>
+              </Button>
+              <UserButton 
+                afterSignOutUrl="/"
+                appearance={{
+                  elements: {
+                    avatarBox: "w-10 h-10 border-2 border-slate-200",
+                  }
+                }}
+              />
+            </SignedIn>
           </div>
         </div>
       </div>
