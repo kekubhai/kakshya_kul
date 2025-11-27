@@ -27,8 +27,10 @@ export function Navbar() {
   const [featuresOpen, setFeaturesOpen] = useState(false);
   const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
 
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
   return (
-    <nav className="bg-transparent border-gray-900 rounded-full ">
+    <nav className="bg-transparent border-gray-900 w-full sticky top-0 z-50 md:rounded-full">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-16">
           <div className="flex-shrink-0 flex items-center">

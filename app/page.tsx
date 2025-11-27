@@ -17,13 +17,13 @@ export default function Home() {
       initial={{ opacity: 0 }}
       animate={{ opacity: 1 }}
       transition={{ duration: 0.5 }}
-      className="min-h-screen bg-gradient-to-b from-blue-50 to-white dark:from-gray-900 dark:to-gray-800"
+      className="min-h-screen bg-white text-slate-900 selection:bg-orange-500 selection:text-white"
     >
     <Navbar/>
       <Hero />
       <Features />
-      <Contact/>
       <AnimatedTestimonialsDemo/>
+      <Contact/>
       <Footer />
     </motion.div>
   )
