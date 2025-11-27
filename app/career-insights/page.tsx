@@ -188,33 +188,67 @@ const CareerCard = () => {
   );
 
   return (
-    <div className="p-6">
-      <Input
-        placeholder="Search careers"
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        className="mb-4"
-      />
-      <div className="grid grid-cols-1 gap-4 md:grid-cols-2 lg:grid-cols-3">
-        {filteredData.map((career) => (
-          <Card key={career.title}>
-            <CardHeader>
-              <CardTitle>{career.title}</CardTitle>
-              <CardDescription>Average Salary: ${career.avgSalary}</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <ResponsiveContainer width="100%" height={200}>
-                <BarChart data={[career]}>
-                  <XAxis dataKey="title" />
-                  <YAxis />
-                  <Tooltip />
-                  <Bar  dataKey="avgSalary"
-                    fill={`hsl(${Math.random() * 360 % 360}, 90%, 70%)`}></Bar>
-                </BarChart>
-              </ResponsiveContainer>
-            </CardContent>
-          </Card>
-        ))}
+    <div className="min-h-screen bg-white py-24">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-bold text-slate-900 tracking-tight mb-4">
+            Career Insights
+          </h1>
+          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
+            Explore salary trends and job growth across different career paths.
+          </p>
+        </div>
+
+        <div className="max-w-md mx-auto mb-12">
+          <Input
+            placeholder="Search careers..."
+            value={search}
+            onChange={(e) => setSearch(e.target.value)}
+            className="w-full border-slate-200 focus:border-slate-900 rounded-full px-6 py-6 text-lg"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {filteredData.slice(0, 12).map((career, index) => (
+            <Card key={`${career.title}-${index}`} className="bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
+              <CardHeader className="pb-2">
+                <CardTitle className="text-lg font-semibold text-slate-900">{career.title}</CardTitle>
+                <CardDescription className="text-slate-500">
+                  <span className="text-2xl font-bold text-slate-900">${career.avgSalary.toLocaleString()}</span>
+                  <span className="text-sm ml-1">/year</span>
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-sm text-slate-500">Job Growth</span>
+                  <span className="text-sm font-semibold text-emerald-600">+{career.jobGrowth}%</span>
+                </div>
+                <ResponsiveContainer width="100%" height={120}>
+                  <BarChart data={[career]}>
+                    <XAxis dataKey="title" hide />
+                    <YAxis hide />
+                    <Tooltip 
+                      contentStyle={{ 
+                        backgroundColor: 'white', 
+                        border: '1px solid #e2e8f0',
+                        borderRadius: '8px',
+                        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+                      }} 
+                    />
+                    <Bar dataKey="avgSalary" fill="#0f172a" radius={[4, 4, 0, 0]} />
+                  </BarChart>
+                </ResponsiveContainer>
+                <div className="flex flex-wrap gap-2 mt-4">
+                  {career.skills.slice(0, 3).map((skill) => (
+                    <span key={skill} className="text-xs px-3 py-1 bg-slate-100 text-slate-600 rounded-full">
+                      {skill}
+                    </span>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </div>
       </div>
     </div>
   );

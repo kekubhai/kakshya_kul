@@ -7,16 +7,16 @@ interface RoiSuggestionsProps {
 
 export function RoiSuggestions({ suggestions }: RoiSuggestionsProps) {
   return (
-    <Card>
+    <Card className="border-slate-200 bg-slate-50">
       <CardHeader>
-        <CardTitle>Recommendations</CardTitle>
+        <CardTitle className="text-slate-900">Recommendations</CardTitle>
       </CardHeader>
       <CardContent>
         <ul className="space-y-4">
-          {suggestions.map((suggestion, index) => (
-            <li key={index} className="flex items-start gap-2">
-              <CheckCircle className="h-5 w-5 text-green-500 mt-0.5" />
-              <span>{suggestion}</span>
+          {suggestions.slice(0, 5).map((suggestion, index) => (
+            <li key={index} className="flex items-start gap-3 bg-white p-4 rounded-xl border border-slate-100">
+              <CheckCircle className="h-5 w-5 text-emerald-500 mt-0.5 flex-shrink-0" />
+              <span className="text-slate-600">{suggestion}</span>
             </li>
           ))}
         </ul>

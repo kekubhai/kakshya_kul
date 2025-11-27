@@ -23,29 +23,36 @@ export function RoiChart({ results }: RoiChartProps) {
   ]
 
   return (
-    <Card>
+    <Card className="border-slate-200 bg-slate-50">
       <CardHeader>
-        <CardTitle>ROI Analysis</CardTitle>
+        <CardTitle className="text-slate-900">ROI Analysis</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="h-[300px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={data}>
-              <XAxis dataKey="name" />
-              <YAxis />
-              <Tooltip />
-              <Bar dataKey="value" fill="hsl(var(--primary))" />
+              <XAxis dataKey="name" tick={{ fill: '#64748b' }} axisLine={{ stroke: '#e2e8f0' }} />
+              <YAxis tick={{ fill: '#64748b' }} axisLine={{ stroke: '#e2e8f0' }} />
+              <Tooltip 
+                contentStyle={{ 
+                  backgroundColor: 'white', 
+                  border: '1px solid #e2e8f0',
+                  borderRadius: '8px',
+                  boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
+                }} 
+              />
+              <Bar dataKey="value" fill="#0f172a" radius={[4, 4, 0, 0]} />
             </BarChart>
           </ResponsiveContainer>
         </div>
-        <div className="mt-4 grid grid-cols-2 gap-4">
-          <div className="rounded-lg border p-3">
-            <div className="text-sm font-medium">ROI Percentage</div>
-            <div className="text-2xl font-bold">{results.roi.toFixed(2)}%</div>
+        <div className="mt-6 grid grid-cols-2 gap-4">
+          <div className="rounded-xl border border-slate-200 bg-white p-4">
+            <div className="text-sm font-medium text-slate-500">ROI Percentage</div>
+            <div className="text-3xl font-bold text-slate-900">{results.roi.toFixed(2)}%</div>
           </div>
-          <div className="rounded-lg border p-3">
-            <div className="text-sm font-medium">Payback Period</div>
-            <div className="text-2xl font-bold">{results.paybackPeriod.toFixed(1)} years</div>
+          <div className="rounded-xl border border-slate-200 bg-white p-4">
+            <div className="text-sm font-medium text-slate-500">Payback Period</div>
+            <div className="text-3xl font-bold text-slate-900">{results.paybackPeriod.toFixed(1)} years</div>
           </div>
         </div>
       </CardContent>

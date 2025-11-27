@@ -27,57 +27,67 @@ export default function Contact() {
   }
 
   return (
-    <section className="py-24 bg-muted bg-gray-50 dark:bg-gray-900 ">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center">
-          <h2 className="text-3xl font-extrabold text-foreground sm:text-4xl">
-            Contact Us
-          </h2>
-          <p className="mt-4 text-xl text-muted-foreground">
-            Have questions? We're here to help!
+    <section className="min-h-screen py-32 bg-slate-50">
+      <div className="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-16">
+          <h1 className="text-5xl font-bold text-slate-900 tracking-tight mb-4">
+            Get in Touch
+          </h1>
+          <p className="text-xl text-slate-600">
+            Have questions? We&apos;d love to hear from you.
           </p>
         </div>
-        <form onSubmit={handleSubmit} className="mt-12 grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-8">
-          <div>
-            <Input
-              type="text"
-              name="name"
-              id="name"
-              autoComplete="name"
-              placeholder="Your name"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-            />
+        <form onSubmit={handleSubmit} className="bg-white p-8 rounded-2xl border border-slate-200 shadow-sm space-y-6">
+          <div className="grid grid-cols-1 gap-y-6 sm:grid-cols-2 sm:gap-x-6">
+            <div>
+              <label htmlFor="name" className="block text-sm font-medium text-slate-900 mb-2">Name</label>
+              <Input
+                type="text"
+                name="name"
+                id="name"
+                autoComplete="name"
+                placeholder="Your name"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full border-slate-200 focus:border-slate-900 focus:ring-slate-900"
+              />
+            </div>
+            <div>
+              <label htmlFor="email" className="block text-sm font-medium text-slate-900 mb-2">Email</label>
+              <Input
+                type="email"
+                name="email"
+                id="email"
+                autoComplete="email"
+                placeholder="Your email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                required
+                className="w-full border-slate-200 focus:border-slate-900 focus:ring-slate-900"
+              />
+            </div>
           </div>
           <div>
-            <Input
-              type="email"
-              name="email"
-              id="email"
-              autoComplete="email"
-              placeholder="Your email"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              required
-            />
-          </div>
-          <div className="sm:col-span-2">
+            <label htmlFor="message" className="block text-sm font-medium text-slate-900 mb-2">Message</label>
             <Textarea
               id="message"
               name="message"
-              rows={4}
+              rows={5}
               placeholder="Your message"
               value={message}
               onChange={(e) => setMessage(e.target.value)}
               required
+              className="w-full border-slate-200 focus:border-slate-900 focus:ring-slate-900"
             />
           </div>
-          <div className="sm:col-span-2">
-            <Button type="submit" className="w-full">
-              Send Message
-            </Button>
-          </div>
+          <Button type="submit" className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-full py-6 text-lg font-medium transition-all">
+            Send Message
+          </Button>
+        </form>
+      </div>
+    </section>
+  )
         </form>
       </div>
     </section>

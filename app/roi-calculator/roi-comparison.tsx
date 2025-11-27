@@ -17,7 +17,6 @@ interface RoiComparisonProps {
 }
 
 export function RoiComparison({ results }: RoiComparisonProps) {
-  // Sample comparison data - in a real app, this would come from a database
   const comparisonData = [
     {
       type: "Your Program",
@@ -40,30 +39,30 @@ export function RoiComparison({ results }: RoiComparisonProps) {
   ]
 
   return (
-    <Card>
+    <Card className="border-slate-200 bg-slate-50">
       <CardHeader>
-        <CardTitle>Program Comparison</CardTitle>
+        <CardTitle className="text-slate-900">Program Comparison</CardTitle>
       </CardHeader>
       <CardContent>
         <Table>
           <TableHeader>
-            <TableRow>
-              <TableHead>Program Type</TableHead>
-              <TableHead className="text-right">Total Cost</TableHead>
-              <TableHead className="text-right">Potential Earnings</TableHead>
-              <TableHead className="text-right">ROI %</TableHead>
+            <TableRow className="border-slate-200 hover:bg-transparent">
+              <TableHead className="text-slate-500 font-medium">Program Type</TableHead>
+              <TableHead className="text-right text-slate-500 font-medium">Total Cost</TableHead>
+              <TableHead className="text-right text-slate-500 font-medium">Potential Earnings</TableHead>
+              <TableHead className="text-right text-slate-500 font-medium">ROI %</TableHead>
             </TableRow>
           </TableHeader>
           <TableBody>
             {comparisonData.map((item) => (
-              <TableRow key={item.type}>
-                <TableCell className="font-medium">{item.type}</TableCell>
-                <TableCell className="text-right">${item.cost.toLocaleString()}</TableCell>
-                <TableCell className="text-right">${item.earnings.toLocaleString()}</TableCell>
-                <TableCell className="text-right">{item.roi.toFixed(1)}%</TableCell>
+              <TableRow key={item.type} className="border-slate-200 hover:bg-white">
+                <TableCell className="font-medium text-slate-900">{item.type}</TableCell>
+                <TableCell className="text-right text-slate-600">${item.cost.toLocaleString()}</TableCell>
+                <TableCell className="text-right text-slate-600">${item.earnings.toLocaleString()}</TableCell>
+                <TableCell className="text-right font-semibold text-slate-900">{item.roi.toFixed(1)}%</TableCell>
               </TableRow>
             ))}
-</TableBody>
+          </TableBody>
         </Table>
       </CardContent>
     </Card>

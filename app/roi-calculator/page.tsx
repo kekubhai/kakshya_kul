@@ -5,8 +5,7 @@ import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Loader2, HelpCircle, Sun, Moon } from 'lucide-react'
-import { useTheme } from "next-themes"
+import { Loader2, HelpCircle } from 'lucide-react'
 import {
   Select,
   SelectContent,
@@ -60,7 +59,6 @@ export default function RoiCalculator() {
   const [step, setStep] = React.useState(1)
   const [isCalculating, setIsCalculating] = React.useState(false)
   const [results, setResults] = React.useState<any>(null)
-  const { theme, setTheme } = useTheme()
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -194,82 +192,38 @@ export default function RoiCalculator() {
   
 
   return (
-    <div className="light:bg-gradient-to-br 
-from-gray-900 
-via-purple-900 
-to-black 
-bg-size-400 
-animate-bg-shift 
-min-h-screen
-
-dark: bg-gradient-to-br 
-from-neutral-400
-via-purple-900 
-to-black 
-w-full 
-fixed 
-inset-0 
-bg-no-repeat 
-bg-fixed 
-backdrop-blur-sm" >
-
- 
-    <Card  className="w-full max-w-4xl mx-auto  mt-12
-bg-gradient-to-br from-gray-800 via-gray-900 to-black 
-shadow-2xl  border border-gray-700/50 
-transition-all duration-300 ease-in-out 
-hover:scale-[1.02] 
-hover:shadow-2xl 
-hover:ring-2 hover:ring-gray-600 
-ring-opacity-50 
-transform-gpu 
-backdrop-blur-md 
-text-gray-100 
-p-6 
-overflow-hidden 
-relative 
-group 
-outline-none 
-focus:ring-2 focus:ring-blue-500/70 
-dark:bg-opacity-90" >
-      
-      <div className="flex flex-col items-center justify-center space-y-4">
-        <h2 className="text-xl font-semibold text-center mt-4">Unlock Your College ROI</h2>
-        <p className="text-lg dark: text-white  text-center">Discover the potential return on investment for your college degree.</p>
-       
-      </div>
-
-      <CardContent className="p-6">
-        <div className="flex justify-between items-center mb-6">
-          <h1 className="text-2xl font-bold">ROI Calculator for College Degree</h1>
-          <Button
-            variant="ghost"
-            size="icon"
-            onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
-          >
-            {theme === "dark" ? <Sun className="h-5 w-5" /> : <Moon className="h-5 w-5" />}
-          </Button>
+    <div className="min-h-screen bg-slate-50 py-24">
+      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold text-slate-900 tracking-tight mb-4">
+            ROI Calculator
+          </h1>
+          <p className="text-xl text-slate-600">
+            Discover the potential return on investment for your college degree.
+          </p>
         </div>
 
-        <Progress value={step * 33.33} className="mb-6" />
+        <Card className="bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden">
+          <CardContent className="p-8">
+            <Progress value={step * 33.33} className="mb-8 h-2 bg-slate-100" />
 
         <Tabs value={String(step)} onValueChange={(value) => setStep(Number(value))}>
-          <TabsList className="grid w-full grid-cols-3 mb-6">
-            <TabsTrigger value="1">Basic Info</TabsTrigger>
-            <TabsTrigger value="2">College Details</TabsTrigger>
-            <TabsTrigger value="3">Results</TabsTrigger>
+          <TabsList className="grid w-full grid-cols-3 mb-8 bg-slate-100 p-1 rounded-full">
+            <TabsTrigger value="1" className="rounded-full data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm text-slate-600">Basic Info</TabsTrigger>
+            <TabsTrigger value="2" className="rounded-full data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm text-slate-600">College Details</TabsTrigger>
+            <TabsTrigger value="3" className="rounded-full data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm text-slate-600">Results</TabsTrigger>
           </TabsList>
 
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <TabsContent value="1">
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <FormField
                     control={form.control}
                     name="collegeFees"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>College Fees</FormLabel>
+                        <FormLabel className="text-slate-900 font-medium">College Fees</FormLabel>
                         <TooltipProvider>
                           <Tooltip>
                             <TooltipTrigger asChild>
@@ -278,14 +232,15 @@ dark:bg-opacity-90" >
                                   <Input
                                     type="number"
                                     placeholder="Enter college fees in USD"
+                                    className="border-slate-200 focus:border-slate-900 bg-white"
                                     {...field}
                                     onChange={e => field.onChange(Number(e.target.value))}
                                   />
-                                  <HelpCircle className="h-4 w-4 absolute right-3 top-3 text-muted-foreground" />
+                                  <HelpCircle className="h-4 w-4 absolute right-3 top-3 text-slate-400" />
                                 </div>
                               </FormControl>
                             </TooltipTrigger>
-                            <TooltipContent>
+                            <TooltipContent className="bg-slate-900 text-white border-0">
                               <p>Total cost of tuition for the entire program</p>
                             </TooltipContent>
                           </Tooltip>
@@ -300,11 +255,12 @@ dark:bg-opacity-90" >
                     name="familyIncome"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Family Income</FormLabel>
+                        <FormLabel className="text-slate-900 font-medium">Family Income</FormLabel>
                         <FormControl>
                           <Input
                             type="number"
                             placeholder="Enter annual family income"
+                            className="border-slate-200 focus:border-slate-900 bg-white"
                             {...field}
                             onChange={e => field.onChange(Number(e.target.value))}
                             />
@@ -314,22 +270,25 @@ dark:bg-opacity-90" >
                     )}
                     />
 
-                  <Button type="button" onClick={() => setStep(2)}>Next</Button>
+                  <Button type="button" onClick={() => setStep(2)} className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-full py-6">
+                    Next Step
+                  </Button>
                 </div>
               </TabsContent>
 
               <TabsContent value="2">
-                <div className="space-y-4">
+                <div className="space-y-6">
                   <FormField
                     control={form.control}
                     name="avgSalary"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Expected Average Salary</FormLabel>
+                        <FormLabel className="text-slate-900 font-medium">Expected Average Salary</FormLabel>
                         <FormControl>
                           <Input
                             type="number"
                             placeholder="Enter expected salary after graduation"
+                            className="border-slate-200 focus:border-slate-900 bg-white"
                             {...field}
                             onChange={e => field.onChange(Number(e.target.value))}
                             />
@@ -344,16 +303,16 @@ dark:bg-opacity-90" >
                     name="collegeTier"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>College Tier</FormLabel>
+                        <FormLabel className="text-slate-900 font-medium">College Tier</FormLabel>
                         <Select onValueChange={field.onChange} defaultValue={field.value}>
                           <FormControl>
-                            <SelectTrigger>
+                            <SelectTrigger className="border-slate-200 focus:border-slate-900 bg-white">
                               <SelectValue placeholder="Select college tier" />
                             </SelectTrigger>
                           </FormControl>
-                          <SelectContent>
+                          <SelectContent className="bg-white border-slate-200">
                             {collegeTiers.map((tier) => (
-                              <SelectItem key={tier.value} value={tier.value}>
+                              <SelectItem key={tier.value} value={tier.value} className="hover:bg-slate-50">
                                 {tier.label}
                               </SelectItem>
                             ))}
@@ -369,7 +328,7 @@ dark:bg-opacity-90" >
                     name="costOfLiving"
                     render={({ field }) => (
                       <FormItem>
-                        <FormLabel>Cost of Living Index</FormLabel>
+                        <FormLabel className="text-slate-900 font-medium">Cost of Living Index</FormLabel>
                         <FormControl>
                           <Slider
                             min={0}
@@ -377,9 +336,10 @@ dark:bg-opacity-90" >
                             step={1}
                             value={[field.value]}
                             onValueChange={(value) => field.onChange(value[0])}
+                            className="py-4"
                             />
                         </FormControl>
-                        <FormDescription>
+                        <FormDescription className="text-slate-500">
                           Slide to adjust cost of living (0 = Very Low, 100 = Very High)
                         </FormDescription>
                         <FormMessage />
@@ -387,15 +347,15 @@ dark:bg-opacity-90" >
                     )}
                     />
 
-                  <div className="flex justify-between">
-                    <Button type="button" variant="outline" onClick={() => setStep(1)}>
+                  <div className="flex gap-4">
+                    <Button type="button" variant="outline" onClick={() => setStep(1)} className="flex-1 border-slate-200 text-slate-600 hover:bg-slate-50 rounded-full py-6">
                       Previous
                     </Button>
-                    <Button type="submit" disabled={isCalculating}>
+                    <Button type="submit" disabled={isCalculating} className="flex-1 bg-slate-900 hover:bg-slate-800 text-white rounded-full py-6">
                       {isCalculating ? (
                         <>
                           <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Check Results
+                          Calculating...
                         </>
                       ) : (
                         "Calculate ROI"
@@ -407,12 +367,12 @@ dark:bg-opacity-90" >
 
               <TabsContent value="3">
                 {results && (
-                  <div className="space-y-6">
+                  <div className="space-y-8">
                     <RoiChart results={results} />
                     <RoiComparison results={results} />
                     <RoiSuggestions suggestions={results.suggestions} />
                     
-                    <Button type="button" variant="outline" onClick={() => setStep(1)}>
+                    <Button type="button" variant="outline" onClick={() => setStep(1)} className="w-full border-slate-200 text-slate-600 hover:bg-slate-50 rounded-full py-6">
                       Start Over
                     </Button>
                   </div>
@@ -422,10 +382,9 @@ dark:bg-opacity-90" >
           </Form>
         </Tabs>
       </CardContent>
-                   
-
     </Card>
-                </div>
+    </div>
+  </div>
   )
 }
 
