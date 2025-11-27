@@ -1,14 +1,14 @@
 "use client";
 
 import Link from "next/link";
-import { useState } from "react";
-
-import { useTheme } from "next-themes";
 import { Button } from "@/components/ui/button";
-import { Moon, Sun, Check, ChevronsUpDown, School2Icon } from "lucide-react";
-import { Popover, PopoverContent, PopoverTrigger } from "@/components/ui/popover";
-import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "@/components/ui/command";
-import { cn } from "@/lib/utils";
+import { School2Icon, ChevronDown } from "lucide-react";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 const navItems = [
   { name: "Home", href: "/" },
@@ -23,89 +23,56 @@ const featuresDropdown = [
 ];
 
 export function Navbar() {
-  const { theme, setTheme } = useTheme();
-  const [featuresOpen, setFeaturesOpen] = useState(false);
-  const [selectedFeature, setSelectedFeature] = useState<string | null>(null);
-
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   return (
-    <nav className="bg-transparent border-gray-900 w-full sticky top-0 z-50 md:rounded-full">
+    <nav className="w-full sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between h-16">
+        <div className="flex justify-between items-center h-20">
+          {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="text-2xl font-bold text-primary relative">
-             <School2Icon/>
+            <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-slate-900 tracking-tight">
+              <School2Icon className="h-6 w-6" />
               Kakshya-KUL
             </Link>
           </div>
-          <div className="flex items-center space-x-4">
+
+          {/* Center Links */}
+          <div className="hidden md:flex items-center space-x-8">
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="relative inline-flex items-center px-1 pt-1 text-sm font-medium text-foreground hover:text-primary"
+                className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
               >
                 {item.name}
               </Link>
             ))}
 
-  
-            <Popover  open={featuresOpen} onOpenChange={setFeaturesOpen}>
-              <PopoverTrigger asChild>
-                <Button
-                  variant="outline"
-                  role="combobox"
-                  aria-expanded={featuresOpen}
-                  className="w-[200px] justify-between"
-                >
-                  {selectedFeature
-                    ? featuresDropdown.find((item) => item.value === selectedFeature)?.label
-                    : "Features"}
-                  <ChevronsUpDown className="opacity-50" />
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-[200px] p-0">
-                <Command>
-                  <CommandInput placeholder="Search feature..." className="h-9" />
-                  <CommandList>
-                    <CommandEmpty>No feature found.</CommandEmpty>
-                    <CommandGroup>
-                      {featuresDropdown.map((feature) => (
-                        <CommandItem
-                          key={feature.value}
-                          onSelect={(currentValue) => {
-                            setSelectedFeature(currentValue === selectedFeature ? null : currentValue);
-                            setFeaturesOpen(false);
-                          }}
-                          value={feature.value}
-                        >
-                          <Link href={feature.href} className="w-full">
-                            {feature.label}
-                          </Link>
-                          <Check
-                            className={cn(
-                              "ml-auto",
-                              selectedFeature === feature.value ? "opacity-100" : "opacity-0"
-                            )}
-                          />
-                        </CommandItem>
-                      ))}
-                    </CommandGroup>
-                  </CommandList>
-                </Command>
-              </PopoverContent>
-            </Popover>
+            <DropdownMenu>
+              <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors outline-none">
+                Features <ChevronDown className="h-4 w-4" />
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end" className="w-48 bg-white border-slate-200 shadow-lg rounded-lg p-1">
+                {featuresDropdown.map((feature) => (
+                  <DropdownMenuItem key={feature.value} asChild>
+                    <Link
+                      href={feature.href}
+                      className="w-full cursor-pointer text-slate-600 focus:text-slate-900 focus:bg-slate-50 rounded-md px-2 py-2 text-sm"
+                    >
+                      {feature.label}
+                    </Link>
+                  </DropdownMenuItem>
+                ))}
+              </DropdownMenuContent>
+            </DropdownMenu>
+          </div>
 
+          {/* Right Button */}
+          <div className="flex items-center">
             <Button
-              variant="ghost"
-              size="icon"
-              aria-label="Toggle theme"
-              className="ml-4"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              asChild
+              className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-6 py-2 h-auto text-sm font-medium transition-all shadow-sm hover:shadow-md"
             >
-              <Sun className="h-5 w-5 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-5 w-5 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <Link href="/roi-calculator">Get Started</Link>
             </Button>
           </div>
         </div>
