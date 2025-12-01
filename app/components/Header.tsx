@@ -1,105 +1,135 @@
 "use client";
 
 import Link from "next/link";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
-import { School2Icon, ChevronDown } from "lucide-react";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
+import { Menu, X } from "lucide-react";
 import { SignInButton, SignUpButton, SignedIn, SignedOut, UserButton } from "@clerk/nextjs";
+import { motion, AnimatePresence } from "framer-motion";
 
 const navItems = [
   { name: "Home", href: "/" },
-  { name: "Contact", href: "/contact" },
-  { name: "The Dev", href: "/the-dev" },
-];
-
-const featuresDropdown = [
-  { value: "roi-calculator", label: "ROI Calculator", href: "/roi-calculator" },
-  { value: "college-comparison", label: "College Comparisons", href: "/college-comparison" },
-  { value: "career-insights", label: "Career Insights", href: "/career-insights" },
+  { name: "Calculator", href: "/roi-calculator" },
+  { name: "Compare", href: "/college-comparison" },
+  { name: "Insights", href: "/career-insights" },
 ];
 
 export function Navbar() {
+  const [scrolled, setScrolled] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setScrolled(window.scrollY > 20);
+    };
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
-    <nav className="w-full sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-slate-200">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex justify-between items-center h-20">
-          {/* Logo */}
-          <div className="flex-shrink-0 flex items-center">
-            <Link href="/" className="flex items-center gap-2 text-2xl font-bold text-slate-900 tracking-tight">
-              <School2Icon className="h-6 w-6" />
-              Kakshya-KUL
+    <>
+      <motion.nav 
+        initial={{ y: -100 }}
+        animate={{ y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+        className={`w-full fixed top-0 z-50 transition-all duration-300 ${
+          scrolled 
+            ? "bg-white/90 backdrop-blur-xl shadow-sm border-b border-zinc-100" 
+            : "bg-transparent"
+        }`}
+      >
+        <div className="max-w-7xl mx-auto px-6 lg:px-8">
+          <div className="flex justify-between items-center h-20">
+            {/* Logo */}
+            <Link href="/" className="flex items-center gap-2 group">
+              <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-emerald-400 to-teal-500 flex items-center justify-center shadow-lg shadow-emerald-500/20 group-hover:shadow-emerald-500/40 transition-shadow">
+                <span className="text-white font-bold text-lg">K</span>
+              </div>
+              <span className="text-xl font-bold text-zinc-900 tracking-tight hidden sm:block">
+                Kakshya<span className="text-emerald-500">KUL</span>
+              </span>
             </Link>
-          </div>
 
-          {/* Center Links */}
-          <div className="hidden md:flex items-center space-x-8">
-            {navItems.map((item) => (
-              <Link
-                key={item.name}
-                href={item.href}
-                className="text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors"
-              >
-                {item.name}
-              </Link>
-            ))}
+            {/* Center Links - Desktop */}
+            <div className="hidden lg:flex items-center gap-1 bg-zinc-100/80 backdrop-blur-sm rounded-full p-1.5">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  className="px-5 py-2 text-sm font-medium text-zinc-600 hover:text-zinc-900 hover:bg-white rounded-full transition-all duration-200"
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
 
-            <DropdownMenu>
-              <DropdownMenuTrigger className="flex items-center gap-1 text-sm font-medium text-slate-600 hover:text-slate-900 transition-colors outline-none">
-                Features <ChevronDown className="h-4 w-4" />
-              </DropdownMenuTrigger>
-              <DropdownMenuContent align="end" className="w-48 bg-white border-slate-200 shadow-lg rounded-lg p-1">
-                {featuresDropdown.map((feature) => (
-                  <DropdownMenuItem key={feature.value} asChild>
-                    <Link
-                      href={feature.href}
-                      className="w-full cursor-pointer text-slate-600 focus:text-slate-900 focus:bg-slate-50 rounded-md px-2 py-2 text-sm"
-                    >
-                      {feature.label}
-                    </Link>
-                  </DropdownMenuItem>
-                ))}
-              </DropdownMenuContent>
-            </DropdownMenu>
-          </div>
-
-          {/* Right Buttons - Auth */}
-          <div className="flex items-center gap-3">
-            <SignedOut>
-              <SignInButton mode="modal">
-                <Button variant="ghost" className="text-sm font-medium text-slate-600 hover:text-slate-900">
-                  Sign In
+            {/* Right Buttons - Auth */}
+            <div className="flex items-center gap-3">
+              <SignedOut>
+                <SignInButton mode="modal">
+                  <Button variant="ghost" className="hidden sm:flex text-sm font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100 rounded-full px-5">
+                    Sign In
+                  </Button>
+                </SignInButton>
+                <SignUpButton mode="modal">
+                  <Button className="bg-zinc-900 hover:bg-zinc-800 text-white rounded-full px-6 py-2.5 h-auto text-sm font-medium transition-all shadow-lg shadow-zinc-900/20 hover:shadow-zinc-900/30 hover:scale-105">
+                    Get Started Free
+                  </Button>
+                </SignUpButton>
+              </SignedOut>
+              <SignedIn>
+                <Button
+                  asChild
+                  className="bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-full px-6 py-2.5 h-auto text-sm font-medium transition-all shadow-lg shadow-emerald-500/20 hover:shadow-emerald-500/40 hover:scale-105"
+                >
+                  <Link href="/roi-calculator">Calculate ROI</Link>
                 </Button>
-              </SignInButton>
-              <SignUpButton mode="modal">
-                <Button className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-6 py-2 h-auto text-sm font-medium transition-all shadow-sm hover:shadow-md">
-                  Get Started
-                </Button>
-              </SignUpButton>
-            </SignedOut>
-            <SignedIn>
-              <Button
-                asChild
-                className="bg-slate-900 hover:bg-slate-800 text-white rounded-full px-6 py-2 h-auto text-sm font-medium transition-all shadow-sm hover:shadow-md"
+                <UserButton 
+                  afterSignOutUrl="/"
+                  appearance={{
+                    elements: {
+                      avatarBox: "w-10 h-10 ring-2 ring-zinc-100",
+                    }
+                  }}
+                />
+              </SignedIn>
+
+              {/* Mobile Menu Button */}
+              <button 
+                onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+                className="lg:hidden p-2 hover:bg-zinc-100 rounded-full transition-colors"
               >
-                <Link href="/roi-calculator">Calculate ROI</Link>
-              </Button>
-              <UserButton 
-                afterSignOutUrl="/"
-                appearance={{
-                  elements: {
-                    avatarBox: "w-10 h-10 border-2 border-slate-200",
-                  }
-                }}
-              />
-            </SignedIn>
+                {mobileMenuOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
+              </button>
+            </div>
           </div>
         </div>
-      </div>
-    </nav>
+      </motion.nav>
+
+      {/* Mobile Menu */}
+      <AnimatePresence>
+        {mobileMenuOpen && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="fixed inset-x-0 top-20 z-40 bg-white/95 backdrop-blur-xl border-b border-zinc-100 lg:hidden"
+          >
+            <div className="p-6 space-y-3">
+              {navItems.map((item) => (
+                <Link
+                  key={item.name}
+                  href={item.href}
+                  onClick={() => setMobileMenuOpen(false)}
+                  className="block px-4 py-3 text-lg font-medium text-zinc-600 hover:text-zinc-900 hover:bg-zinc-50 rounded-xl transition-colors"
+                >
+                  {item.name}
+                </Link>
+              ))}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+    </>
   );
 }

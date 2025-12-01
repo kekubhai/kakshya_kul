@@ -3,10 +3,10 @@
 
 "use client";
 
-import { useEffect, useState } from 'react';
-import { Input } from '@/components/ui/input';
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
+import { useState } from 'react';
+import { motion } from 'framer-motion';
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from 'recharts';
+import { Search, TrendingUp, Briefcase, IndianRupee } from 'lucide-react';
 
 type Career = {
   title: string;
@@ -182,72 +182,175 @@ const careerData: Career[] = [
 
 const CareerCard = () => {
   const [search, setSearch] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("All");
+
+  const categories = ["All", "Engineering", "Medical", "Business", "Creative", "Tech"];
 
   const filteredData = careerData.filter((career) =>
     career.title.toLowerCase().includes(search.toLowerCase())
   );
 
+  // Get unique careers (deduplicate)
+  const uniqueCareers = filteredData.reduce((acc: Career[], current) => {
+    const x = acc.find(item => item.title === current.title);
+    if (!x) {
+      return acc.concat([current]);
+    } else {
+      return acc;
+    }
+  }, []);
+
   return (
-    <div className="min-h-screen bg-white py-24">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-16">
-          <h1 className="text-5xl font-bold text-slate-900 tracking-tight mb-4">
-            Career Insights
-          </h1>
-          <p className="text-xl text-slate-600 max-w-2xl mx-auto">
-            Explore salary trends and job growth across different career paths.
-          </p>
+    <div className="min-h-screen bg-[#FAFAFA]">
+      {/* Hero Section */}
+      <div className="relative overflow-hidden bg-gradient-to-br from-zinc-900 via-zinc-800 to-zinc-900 pt-32 pb-20">
+        <div className="absolute inset-0">
+          <div className="absolute top-20 right-20 w-72 h-72 bg-violet-500/20 rounded-full blur-3xl" />
+          <div className="absolute bottom-10 left-10 w-96 h-96 bg-blue-500/20 rounded-full blur-3xl" />
         </div>
-
-        <div className="max-w-md mx-auto mb-12">
-          <Input
-            placeholder="Search careers..."
-            value={search}
-            onChange={(e) => setSearch(e.target.value)}
-            className="w-full border-slate-200 focus:border-slate-900 rounded-full px-6 py-6 text-lg"
-          />
+        
+        <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center"
+          >
+            <div className="inline-flex items-center gap-2 px-4 py-2 bg-white/10 backdrop-blur-sm rounded-full text-violet-400 text-sm font-medium mb-6">
+              <Briefcase className="w-4 h-4" />
+              Explore {uniqueCareers.length}+ Career Paths
+            </div>
+            <h1 className="text-4xl md:text-6xl font-bold text-white tracking-tight mb-6">
+              Career <span className="bg-gradient-to-r from-violet-400 to-purple-400 bg-clip-text text-transparent">Insights</span>
+            </h1>
+            <p className="text-xl text-zinc-400 max-w-2xl mx-auto mb-10">
+              Discover salary trends, job growth, and in-demand skills across industries in India.
+            </p>
+            
+            {/* Search Bar */}
+            <div className="max-w-xl mx-auto relative">
+              <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-400" />
+              <input
+                type="text"
+                placeholder="Search careers..."
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
+                className="w-full pl-12 pr-6 py-4 bg-white/10 backdrop-blur-sm border border-white/20 rounded-2xl text-white placeholder:text-zinc-400 focus:outline-none focus:ring-2 focus:ring-violet-500/50 focus:border-violet-500/50 transition-all"
+              />
+            </div>
+          </motion.div>
         </div>
+      </div>
 
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+        {/* Category Filters */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="flex flex-wrap gap-3 mb-12"
+        >
+          {categories.map((category) => (
+            <button
+              key={category}
+              onClick={() => setSelectedCategory(category)}
+              className={`px-5 py-2 rounded-xl font-medium transition-all ${
+                selectedCategory === category
+                  ? "bg-gradient-to-r from-violet-500 to-purple-500 text-white shadow-lg shadow-violet-500/25"
+                  : "bg-white border border-zinc-200 text-zinc-600 hover:border-violet-300"
+              }`}
+            >
+              {category}
+            </button>
+          ))}
+        </motion.div>
+
+        {/* Career Grid */}
         <div className="grid grid-cols-1 gap-6 md:grid-cols-2 lg:grid-cols-3">
-          {filteredData.slice(0, 12).map((career, index) => (
-            <Card key={`${career.title}-${index}`} className="bg-white border border-slate-200 rounded-2xl shadow-sm hover:shadow-md transition-all hover:-translate-y-1">
-              <CardHeader className="pb-2">
-                <CardTitle className="text-lg font-semibold text-slate-900">{career.title}</CardTitle>
-                <CardDescription className="text-slate-500">
-                  <span className="text-2xl font-bold text-slate-900">${career.avgSalary.toLocaleString()}</span>
-                  <span className="text-sm ml-1">/year</span>
-                </CardDescription>
-              </CardHeader>
-              <CardContent>
-                <div className="flex items-center justify-between mb-4">
-                  <span className="text-sm text-slate-500">Job Growth</span>
-                  <span className="text-sm font-semibold text-emerald-600">+{career.jobGrowth}%</span>
+          {uniqueCareers.slice(0, 12).map((career, index) => (
+            <motion.div
+              key={`${career.title}-${index}`}
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05 }}
+              className="group bg-white rounded-2xl border border-zinc-200 overflow-hidden shadow-lg shadow-zinc-200/50 hover:shadow-xl hover:-translate-y-1 transition-all"
+            >
+              <div className="h-1 bg-gradient-to-r from-violet-400 via-purple-400 to-pink-400" />
+              
+              <div className="p-6">
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="text-lg font-bold text-zinc-900 group-hover:text-violet-600 transition-colors">
+                      {career.title}
+                    </h3>
+                    <div className="flex items-center gap-2 mt-1">
+                      <TrendingUp className="w-4 h-4 text-emerald-500" />
+                      <span className="text-sm text-emerald-600 font-medium">+{career.jobGrowth}% growth</span>
+                    </div>
+                  </div>
+                  <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-violet-100 to-purple-100 flex items-center justify-center">
+                    <IndianRupee className="w-5 h-5 text-violet-600" />
+                  </div>
                 </div>
-                <ResponsiveContainer width="100%" height={120}>
-                  <BarChart data={[career]}>
-                    <XAxis dataKey="title" hide />
-                    <YAxis hide />
-                    <Tooltip 
-                      contentStyle={{ 
-                        backgroundColor: 'white', 
-                        border: '1px solid #e2e8f0',
-                        borderRadius: '8px',
-                        boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
-                      }} 
-                    />
-                    <Bar dataKey="avgSalary" fill="#0f172a" radius={[4, 4, 0, 0]} />
-                  </BarChart>
-                </ResponsiveContainer>
-                <div className="flex flex-wrap gap-2 mt-4">
+                
+                <div className="mb-6">
+                  <p className="text-sm text-zinc-500 mb-1">Average Salary (Indian Context)</p>
+                  <p className="text-3xl font-bold text-zinc-900">
+                    ₹{Math.round(career.avgSalary * 0.012 / 100000 * 100) / 100}L
+                    <span className="text-sm font-normal text-zinc-400 ml-1">/year</span>
+                  </p>
+                </div>
+                
+                {/* Mini Chart */}
+                <div className="h-20 mb-4">
+                  <ResponsiveContainer width="100%" height="100%">
+                    <BarChart data={[
+                      { name: "Entry", value: career.avgSalary * 0.6 },
+                      { name: "Mid", value: career.avgSalary },
+                      { name: "Senior", value: career.avgSalary * 1.5 },
+                    ]}>
+                      <defs>
+                        <linearGradient id={`gradient-${index}`} x1="0" y1="0" x2="0" y2="1">
+                          <stop offset="0%" stopColor="#8b5cf6" />
+                          <stop offset="100%" stopColor="#a855f7" />
+                        </linearGradient>
+                      </defs>
+                      <XAxis dataKey="name" tick={{ fill: '#a1a1aa', fontSize: 10 }} axisLine={false} tickLine={false} />
+                      <YAxis hide />
+                      <Tooltip 
+                        contentStyle={{ 
+                          backgroundColor: '#18181b', 
+                          border: 'none',
+                          borderRadius: '8px',
+                          color: 'white',
+                          fontSize: '12px'
+                        }}
+                        formatter={(value: number) => [`₹${Math.round(value * 0.012 / 1000)}K`, '']}
+                      />
+                      <Bar dataKey="value" fill={`url(#gradient-${index})`} radius={[4, 4, 0, 0]} />
+                    </BarChart>
+                  </ResponsiveContainer>
+                </div>
+                
+                {/* Skills */}
+                <div className="flex flex-wrap gap-2">
                   {career.skills.slice(0, 3).map((skill) => (
-                    <span key={skill} className="text-xs px-3 py-1 bg-slate-100 text-slate-600 rounded-full">
+                    <span 
+                      key={skill} 
+                      className="text-xs px-3 py-1.5 bg-zinc-100 text-zinc-600 rounded-lg font-medium"
+                    >
                       {skill}
                     </span>
                   ))}
                 </div>
-              </CardContent>
-            </Card>
+              </div>
+            </motion.div>
           ))}
+        </div>
+        
+        {/* Load More */}
+        <div className="text-center mt-12">
+          <button className="px-8 py-4 bg-white border border-zinc-200 rounded-xl font-semibold text-zinc-700 hover:border-violet-300 hover:shadow-lg transition-all">
+            Load More Careers
+          </button>
         </div>
       </div>
     </div>

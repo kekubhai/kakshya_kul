@@ -1,4 +1,3 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis, Tooltip } from "recharts"
 
 interface RoiChartProps {
@@ -13,50 +12,62 @@ interface RoiChartProps {
 export function RoiChart({ results }: RoiChartProps) {
   const data = [
     {
-      name: "Total Cost",
+      name: "Investment",
       value: results.totalCost,
+      fill: "url(#gradientCost)",
     },
     {
-      name: "Potential Earnings",
+      name: "10-Year Earnings",
       value: results.potentialEarnings,
+      fill: "url(#gradientEarnings)",
     },
   ]
 
   return (
-    <Card className="border-slate-200 bg-slate-50">
-      <CardHeader>
-        <CardTitle className="text-slate-900">ROI Analysis</CardTitle>
-      </CardHeader>
-      <CardContent>
-        <div className="h-[300px]">
-          <ResponsiveContainer width="100%" height="100%">
-            <BarChart data={data}>
-              <XAxis dataKey="name" tick={{ fill: '#64748b' }} axisLine={{ stroke: '#e2e8f0' }} />
-              <YAxis tick={{ fill: '#64748b' }} axisLine={{ stroke: '#e2e8f0' }} />
-              <Tooltip 
-                contentStyle={{ 
-                  backgroundColor: 'white', 
-                  border: '1px solid #e2e8f0',
-                  borderRadius: '8px',
-                  boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)'
-                }} 
-              />
-              <Bar dataKey="value" fill="#0f172a" radius={[4, 4, 0, 0]} />
-            </BarChart>
-          </ResponsiveContainer>
-        </div>
-        <div className="mt-6 grid grid-cols-2 gap-4">
-          <div className="rounded-xl border border-slate-200 bg-white p-4">
-            <div className="text-sm font-medium text-slate-500">ROI Percentage</div>
-            <div className="text-3xl font-bold text-slate-900">{results.roi.toFixed(2)}%</div>
-          </div>
-          <div className="rounded-xl border border-slate-200 bg-white p-4">
-            <div className="text-sm font-medium text-slate-500">Payback Period</div>
-            <div className="text-3xl font-bold text-slate-900">{results.paybackPeriod.toFixed(1)} years</div>
-          </div>
-        </div>
-      </CardContent>
-    </Card>
+    <div className="bg-gradient-to-br from-zinc-50 to-white rounded-2xl border border-zinc-200 p-6">
+      <h3 className="text-lg font-bold text-zinc-900 mb-6">Investment vs Returns</h3>
+      <div className="h-[280px]">
+        <ResponsiveContainer width="100%" height="100%">
+          <BarChart data={data} barSize={60}>
+            <defs>
+              <linearGradient id="gradientCost" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#f97316" />
+                <stop offset="100%" stopColor="#ea580c" />
+              </linearGradient>
+              <linearGradient id="gradientEarnings" x1="0" y1="0" x2="0" y2="1">
+                <stop offset="0%" stopColor="#10b981" />
+                <stop offset="100%" stopColor="#059669" />
+              </linearGradient>
+            </defs>
+            <XAxis 
+              dataKey="name" 
+              tick={{ fill: '#71717a', fontSize: 12 }} 
+              axisLine={{ stroke: '#e4e4e7' }}
+              tickLine={false}
+            />
+            <YAxis 
+              tick={{ fill: '#71717a', fontSize: 12 }} 
+              axisLine={{ stroke: '#e4e4e7' }}
+              tickLine={false}
+              tickFormatter={(value) => `₹${(value / 100000).toFixed(0)}L`}
+            />
+            <Tooltip 
+              contentStyle={{ 
+                backgroundColor: '#18181b', 
+                border: 'none',
+                borderRadius: '12px',
+                boxShadow: '0 10px 25px rgb(0 0 0 / 0.2)',
+                color: 'white',
+                padding: '12px 16px'
+              }}
+              formatter={(value: number) => [`₹${(value / 100000).toFixed(1)} Lakhs`, '']}
+              labelStyle={{ color: '#a1a1aa', marginBottom: '4px' }}
+            />
+            <Bar dataKey="value" radius={[8, 8, 0, 0]} />
+          </BarChart>
+        </ResponsiveContainer>
+      </div>
+    </div>
   )
 }
 

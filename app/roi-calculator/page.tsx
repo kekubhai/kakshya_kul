@@ -5,7 +5,8 @@ import * as React from "react"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
-import { Loader2, HelpCircle } from 'lucide-react'
+import { Loader2, HelpCircle, ArrowLeft, ArrowRight, Sparkles, IndianRupee, GraduationCap, Building2 } from 'lucide-react'
+import { motion, AnimatePresence } from 'framer-motion'
 import {
   Select,
   SelectContent,
@@ -31,12 +32,10 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip"
-import {  Card, CardContent } from "@/components/ui/card"
-import { Progress } from "@/components/ui/progress"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs"
 import { RoiChart } from "./roi-charts"
 import { RoiComparison } from "./roi-comparison"
 import { RoiSuggestions } from "./roi-suggestions"
+import { Navbar } from "../components/Header"
 
 
 
@@ -190,201 +189,320 @@ export default function RoiCalculator() {
     return suggestions;
   }
   
+  const stepInfo = [
+    { number: 1, title: 'Basic Info', icon: <IndianRupee className="w-5 h-5" /> },
+    { number: 2, title: 'College Details', icon: <GraduationCap className="w-5 h-5" /> },
+    { number: 3, title: 'Results', icon: <Sparkles className="w-5 h-5" /> },
+  ]
 
   return (
-    <div className="min-h-screen bg-slate-50 py-24">
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h1 className="text-5xl font-bold text-slate-900 tracking-tight mb-4">
-            ROI Calculator
-          </h1>
-          <p className="text-xl text-slate-600">
-            Discover the potential return on investment for your college degree.
-          </p>
-        </div>
+    <div className="min-h-screen bg-[#FAFAFA]">
+      <Navbar />
+      
+      <div className="pt-28 pb-20">
+        <div className="container mx-auto px-6 lg:px-8">
+          {/* Header */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-center mb-12"
+          >
+            <div className="inline-flex items-center gap-2 bg-white border border-zinc-200 rounded-full px-4 py-2 mb-6 shadow-sm">
+              <Building2 className="w-4 h-4 text-emerald-500" />
+              <span className="text-sm font-medium text-zinc-600">ROI Calculator</span>
+            </div>
+            <h1 className="text-4xl sm:text-5xl font-bold text-zinc-900 tracking-tight mb-4">
+              Calculate Your
+              <span className="bg-gradient-to-r from-emerald-500 to-teal-500 bg-clip-text text-transparent"> Education ROI</span>
+            </h1>
+            <p className="text-lg text-zinc-600 max-w-2xl mx-auto">
+              Enter your details to discover the potential return on investment for your college degree.
+            </p>
+          </motion.div>
 
-        <Card className="bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden">
-          <CardContent className="p-8">
-            <Progress value={step * 33.33} className="mb-8 h-2 bg-slate-100" />
+          {/* Progress Steps */}
+          <div className="max-w-3xl mx-auto mb-12">
+            <div className="flex items-center justify-between">
+              {stepInfo.map((s, index) => (
+                <React.Fragment key={s.number}>
+                  <div className="flex flex-col items-center">
+                    <div 
+                      className={`w-14 h-14 rounded-2xl flex items-center justify-center transition-all duration-300 ${
+                        step >= s.number 
+                          ? 'bg-gradient-to-br from-emerald-400 to-teal-500 text-white shadow-lg shadow-emerald-500/30' 
+                          : 'bg-white border-2 border-zinc-200 text-zinc-400'
+                      }`}
+                    >
+                      {s.icon}
+                    </div>
+                    <span className={`mt-2 text-sm font-medium ${step >= s.number ? 'text-zinc-900' : 'text-zinc-400'}`}>
+                      {s.title}
+                    </span>
+                  </div>
+                  {index < stepInfo.length - 1 && (
+                    <div className={`flex-1 h-1 mx-4 rounded-full transition-all duration-300 ${
+                      step > s.number ? 'bg-gradient-to-r from-emerald-400 to-teal-500' : 'bg-zinc-200'
+                    }`} />
+                  )}
+                </React.Fragment>
+              ))}
+            </div>
+          </div>
 
-        <Tabs value={String(step)} onValueChange={(value) => setStep(Number(value))}>
-          <TabsList className="grid w-full grid-cols-3 mb-8 bg-slate-100 p-1 rounded-full">
-            <TabsTrigger value="1" className="rounded-full data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm text-slate-600">Basic Info</TabsTrigger>
-            <TabsTrigger value="2" className="rounded-full data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm text-slate-600">College Details</TabsTrigger>
-            <TabsTrigger value="3" className="rounded-full data-[state=active]:bg-white data-[state=active]:text-slate-900 data-[state=active]:shadow-sm text-slate-600">Results</TabsTrigger>
-          </TabsList>
+          {/* Form Card */}
+          <motion.div
+            layout
+            className="max-w-2xl mx-auto"
+          >
+            <div className="bg-white rounded-3xl border border-zinc-200 shadow-xl shadow-zinc-200/50 overflow-hidden">
+              <Form {...form}>
+                <form onSubmit={form.handleSubmit(onSubmit)}>
+                  <AnimatePresence mode="wait">
+                    {step === 1 && (
+                      <motion.div
+                        key="step1"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        className="p-8 space-y-6"
+                      >
+                        <FormField
+                          control={form.control}
+                          name="collegeFees"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-zinc-900 font-semibold flex items-center gap-2">
+                                <IndianRupee className="w-4 h-4 text-emerald-500" />
+                                Total College Fees (₹)
+                              </FormLabel>
+                              <TooltipProvider>
+                                <Tooltip>
+                                  <TooltipTrigger asChild>
+                                    <FormControl>
+                                      <div className="relative">
+                                        <Input
+                                          type="number"
+                                          placeholder="e.g., 500000"
+                                          className="h-14 text-lg border-zinc-200 focus:border-emerald-500 focus:ring-emerald-500/20 bg-zinc-50 rounded-xl"
+                                          {...field}
+                                          onChange={e => field.onChange(Number(e.target.value))}
+                                        />
+                                        <HelpCircle className="h-5 w-5 absolute right-4 top-4 text-zinc-400" />
+                                      </div>
+                                    </FormControl>
+                                  </TooltipTrigger>
+                                  <TooltipContent className="bg-zinc-900 text-white border-0 rounded-xl px-4 py-2">
+                                    <p>Total cost of tuition for the entire program</p>
+                                  </TooltipContent>
+                                </Tooltip>
+                              </TooltipProvider>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
 
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-              <TabsContent value="1">
-                <div className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="collegeFees"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-slate-900 font-medium">College Fees</FormLabel>
-                        <TooltipProvider>
-                          <Tooltip>
-                            <TooltipTrigger asChild>
+                        <FormField
+                          control={form.control}
+                          name="familyIncome"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-zinc-900 font-semibold">Annual Family Income (₹)</FormLabel>
                               <FormControl>
-                                <div className="relative">
-                                  <Input
-                                    type="number"
-                                    placeholder="Enter college fees in USD"
-                                    className="border-slate-200 focus:border-slate-900 bg-white"
-                                    {...field}
-                                    onChange={e => field.onChange(Number(e.target.value))}
+                                <Input
+                                  type="number"
+                                  placeholder="e.g., 1000000"
+                                  className="h-14 text-lg border-zinc-200 focus:border-emerald-500 focus:ring-emerald-500/20 bg-zinc-50 rounded-xl"
+                                  {...field}
+                                  onChange={e => field.onChange(Number(e.target.value))}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <Button 
+                          type="button" 
+                          onClick={() => setStep(2)} 
+                          className="w-full h-14 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl font-medium text-lg shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all"
+                        >
+                          Continue
+                          <ArrowRight className="w-5 h-5 ml-2" />
+                        </Button>
+                      </motion.div>
+                    )}
+
+                    {step === 2 && (
+                      <motion.div
+                        key="step2"
+                        initial={{ opacity: 0, x: 20 }}
+                        animate={{ opacity: 1, x: 0 }}
+                        exit={{ opacity: 0, x: -20 }}
+                        className="p-8 space-y-6"
+                      >
+                        <FormField
+                          control={form.control}
+                          name="avgSalary"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-zinc-900 font-semibold">Expected Annual Salary (₹)</FormLabel>
+                              <FormControl>
+                                <Input
+                                  type="number"
+                                  placeholder="e.g., 800000"
+                                  className="h-14 text-lg border-zinc-200 focus:border-emerald-500 focus:ring-emerald-500/20 bg-zinc-50 rounded-xl"
+                                  {...field}
+                                  onChange={e => field.onChange(Number(e.target.value))}
+                                />
+                              </FormControl>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="collegeTier"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-zinc-900 font-semibold flex items-center gap-2">
+                                <GraduationCap className="w-4 h-4 text-emerald-500" />
+                                College Tier
+                              </FormLabel>
+                              <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                <FormControl>
+                                  <SelectTrigger className="h-14 text-lg border-zinc-200 focus:border-emerald-500 bg-zinc-50 rounded-xl">
+                                    <SelectValue placeholder="Select college tier" />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className="bg-white border-zinc-200 rounded-xl">
+                                  {collegeTiers.map((tier) => (
+                                    <SelectItem key={tier.value} value={tier.value} className="hover:bg-emerald-50 rounded-lg">
+                                      {tier.label}
+                                    </SelectItem>
+                                  ))}
+                                </SelectContent>
+                              </Select>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <FormField
+                          control={form.control}
+                          name="costOfLiving"
+                          render={({ field }) => (
+                            <FormItem>
+                              <FormLabel className="text-zinc-900 font-semibold">Cost of Living Index: {field.value}</FormLabel>
+                              <FormControl>
+                                <div className="pt-4 pb-2">
+                                  <Slider
+                                    min={0}
+                                    max={100}
+                                    step={1}
+                                    value={[field.value]}
+                                    onValueChange={(value) => field.onChange(value[0])}
+                                    className="[&_[role=slider]]:h-5 [&_[role=slider]]:w-5 [&_[role=slider]]:bg-gradient-to-r [&_[role=slider]]:from-emerald-500 [&_[role=slider]]:to-teal-500"
                                   />
-                                  <HelpCircle className="h-4 w-4 absolute right-3 top-3 text-slate-400" />
                                 </div>
                               </FormControl>
-                            </TooltipTrigger>
-                            <TooltipContent className="bg-slate-900 text-white border-0">
-                              <p>Total cost of tuition for the entire program</p>
-                            </TooltipContent>
-                          </Tooltip>
-                        </TooltipProvider>
-                        <FormMessage />
-                      </FormItem>
+                              <FormDescription className="text-zinc-500">
+                                0 = Metro cities like Mumbai/Delhi, 100 = Smaller towns
+                              </FormDescription>
+                              <FormMessage />
+                            </FormItem>
+                          )}
+                        />
+
+                        <div className="flex gap-4 pt-4">
+                          <Button 
+                            type="button" 
+                            variant="outline" 
+                            onClick={() => setStep(1)} 
+                            className="flex-1 h-14 border-2 border-zinc-200 text-zinc-600 hover:bg-zinc-50 rounded-xl font-medium text-lg"
+                          >
+                            <ArrowLeft className="w-5 h-5 mr-2" />
+                            Back
+                          </Button>
+                          <Button 
+                            type="submit" 
+                            disabled={isCalculating} 
+                            className="flex-1 h-14 bg-gradient-to-r from-emerald-500 to-teal-500 hover:from-emerald-600 hover:to-teal-600 text-white rounded-xl font-medium text-lg shadow-lg shadow-emerald-500/25 hover:shadow-emerald-500/40 transition-all disabled:opacity-50"
+                          >
+                            {isCalculating ? (
+                              <>
+                                <Loader2 className="mr-2 h-5 w-5 animate-spin" />
+                                Calculating...
+                              </>
+                            ) : (
+                              <>
+                                Calculate ROI
+                                <Sparkles className="w-5 h-5 ml-2" />
+                              </>
+                            )}
+                          </Button>
+                        </div>
+                      </motion.div>
                     )}
-                    />
 
-                  <FormField
-                    control={form.control}
-                    name="familyIncome"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-slate-900 font-medium">Family Income</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            placeholder="Enter annual family income"
-                            className="border-slate-200 focus:border-slate-900 bg-white"
-                            {...field}
-                            onChange={e => field.onChange(Number(e.target.value))}
-                            />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
+                    {step === 3 && results && (
+                      <motion.div
+                        key="step3"
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        className="p-8 space-y-8"
+                      >
+                        {/* Results Header */}
+                        <div className="text-center pb-6 border-b border-zinc-100">
+                          <div className="inline-flex items-center gap-2 bg-emerald-50 border border-emerald-200 rounded-full px-4 py-2 mb-4">
+                            <Sparkles className="w-4 h-4 text-emerald-500" />
+                            <span className="text-sm font-medium text-emerald-700">Analysis Complete</span>
+                          </div>
+                          <h2 className="text-2xl font-bold text-zinc-900 mb-2">Your ROI Results</h2>
+                          <p className="text-zinc-600">Based on the information you provided</p>
+                        </div>
+
+                        {/* Key Metrics */}
+                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                          <div className="bg-gradient-to-br from-emerald-50 to-teal-50 rounded-2xl p-6 border border-emerald-100">
+                            <p className="text-sm text-zinc-600 mb-1">ROI Percentage</p>
+                            <p className="text-3xl font-bold text-emerald-600">{results.roi.toFixed(1)}%</p>
+                          </div>
+                          <div className="bg-gradient-to-br from-cyan-50 to-blue-50 rounded-2xl p-6 border border-cyan-100">
+                            <p className="text-sm text-zinc-600 mb-1">Total Investment</p>
+                            <p className="text-3xl font-bold text-cyan-600">₹{(results.totalCost / 100000).toFixed(1)}L</p>
+                          </div>
+                          <div className="bg-gradient-to-br from-violet-50 to-purple-50 rounded-2xl p-6 border border-violet-100">
+                            <p className="text-sm text-zinc-600 mb-1">Payback Period</p>
+                            <p className="text-3xl font-bold text-violet-600">{results.paybackPeriod.toFixed(1)} Yrs</p>
+                          </div>
+                        </div>
+
+                        <RoiChart results={results} />
+                        <RoiComparison results={results} />
+                        <RoiSuggestions suggestions={results.suggestions} />
+                        
+                        <Button 
+                          type="button" 
+                          variant="outline" 
+                          onClick={() => {
+                            setStep(1)
+                            setResults(null)
+                          }} 
+                          className="w-full h-14 border-2 border-zinc-200 text-zinc-600 hover:bg-zinc-50 rounded-xl font-medium text-lg"
+                        >
+                          Start Over
+                        </Button>
+                      </motion.div>
                     )}
-                    />
-
-                  <Button type="button" onClick={() => setStep(2)} className="w-full bg-slate-900 hover:bg-slate-800 text-white rounded-full py-6">
-                    Next Step
-                  </Button>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="2">
-                <div className="space-y-6">
-                  <FormField
-                    control={form.control}
-                    name="avgSalary"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-slate-900 font-medium">Expected Average Salary</FormLabel>
-                        <FormControl>
-                          <Input
-                            type="number"
-                            placeholder="Enter expected salary after graduation"
-                            className="border-slate-200 focus:border-slate-900 bg-white"
-                            {...field}
-                            onChange={e => field.onChange(Number(e.target.value))}
-                            />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                    />
-
-                  <FormField
-                    control={form.control}
-                    name="collegeTier"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-slate-900 font-medium">College Tier</FormLabel>
-                        <Select onValueChange={field.onChange} defaultValue={field.value}>
-                          <FormControl>
-                            <SelectTrigger className="border-slate-200 focus:border-slate-900 bg-white">
-                              <SelectValue placeholder="Select college tier" />
-                            </SelectTrigger>
-                          </FormControl>
-                          <SelectContent className="bg-white border-slate-200">
-                            {collegeTiers.map((tier) => (
-                              <SelectItem key={tier.value} value={tier.value} className="hover:bg-slate-50">
-                                {tier.label}
-                              </SelectItem>
-                            ))}
-                          </SelectContent>
-                        </Select>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                    />
-
-                  <FormField
-                    control={form.control}
-                    name="costOfLiving"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="text-slate-900 font-medium">Cost of Living Index</FormLabel>
-                        <FormControl>
-                          <Slider
-                            min={0}
-                            max={100}
-                            step={1}
-                            value={[field.value]}
-                            onValueChange={(value) => field.onChange(value[0])}
-                            className="py-4"
-                            />
-                        </FormControl>
-                        <FormDescription className="text-slate-500">
-                          Slide to adjust cost of living (0 = Very Low, 100 = Very High)
-                        </FormDescription>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                    />
-
-                  <div className="flex gap-4">
-                    <Button type="button" variant="outline" onClick={() => setStep(1)} className="flex-1 border-slate-200 text-slate-600 hover:bg-slate-50 rounded-full py-6">
-                      Previous
-                    </Button>
-                    <Button type="submit" disabled={isCalculating} className="flex-1 bg-slate-900 hover:bg-slate-800 text-white rounded-full py-6">
-                      {isCalculating ? (
-                        <>
-                          <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                          Calculating...
-                        </>
-                      ) : (
-                        "Calculate ROI"
-                      )}
-                    </Button>
-                  </div>
-                </div>
-              </TabsContent>
-
-              <TabsContent value="3">
-                {results && (
-                  <div className="space-y-8">
-                    <RoiChart results={results} />
-                    <RoiComparison results={results} />
-                    <RoiSuggestions suggestions={results.suggestions} />
-                    
-                    <Button type="button" variant="outline" onClick={() => setStep(1)} className="w-full border-slate-200 text-slate-600 hover:bg-slate-50 rounded-full py-6">
-                      Start Over
-                    </Button>
-                  </div>
-                )}
-              </TabsContent>
-            </form>
-          </Form>
-        </Tabs>
-      </CardContent>
-    </Card>
+                  </AnimatePresence>
+                </form>
+              </Form>
+            </div>
+          </motion.div>
+        </div>
+      </div>
     </div>
-  </div>
   )
 }
 
