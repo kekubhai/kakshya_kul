@@ -14,7 +14,7 @@ import HowItWorks from './components/HowItWorks'
 
 export default function Home() {
   return (
-    <div className="min-h-screen bg-[#FAFAFA] text-zinc-900 selection:bg-emerald-500 selection:text-white overflow-x-hidden">
+    <div className="min-h-screen bg-[#FAFAFA] dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100 selection:bg-emerald-500 selection:text-white overflow-x-hidden">
       <Navbar/>
       <Hero />
       <Stats />

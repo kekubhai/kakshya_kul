@@ -19,9 +19,9 @@ export default function RootLayout({
 }) {
   return (
     <ClerkProvider>
-      <html lang="en" className="light" suppressHydrationWarning>
-        <body className={`${inter.className} antialiased bg-white text-slate-900`}>
-          <ThemeProvider attribute="class" defaultTheme="light" forcedTheme="light">
+      <html lang="en" suppressHydrationWarning>
+        <body className={`${inter.className} antialiased bg-white dark:bg-zinc-950 text-zinc-900 dark:text-zinc-100`}>
+          <ThemeProvider attribute="class" defaultTheme="light" enableSystem disableTransitionOnChange>
             <main>{children}</main>
           </ThemeProvider>
         </body>
